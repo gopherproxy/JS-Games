@@ -50,7 +50,8 @@ function player (name, score){
 var myPlayer = new player('Peter', 65);
 myPlayer.greeting();
 
-// creating a m dimensinal array using literal notation
+// creating a multidimensional array using literal notation
+
 var playerScore = [
 	['Jessica', 0],
 	['Simone', 7],
@@ -58,6 +59,7 @@ var playerScore = [
 	['Ida', 10],
 ];
 
+// adding to the array
 playerScore.push(['Peter', 65]);
 
 console.log(playerScore);
