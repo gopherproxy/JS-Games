@@ -2,6 +2,7 @@
 var number1 = 1;
 var number2 = 11;
 var output = document.getElementById('output');
+var trigger = document.getElementById('trigger');
 
 // regular function with a return value
 function calculate() {
@@ -48,4 +49,28 @@ function player (name, score){
 
 var myPlayer = new player('Peter', 65);
 myPlayer.greeting();
+
+// creating a m dimensinal array using literal notation
+var playerScore = [
+	['Jessica', 0],
+	['Simone', 7],
+	['Vladimir', 9],
+	['Ida', 10],
+];
+
+playerScore.push(['Peter', 65]);
+
+console.log(playerScore);
+
+function listPlayers(){
+	'use strict';
+	for(var i=0; i<playerScore.length; i++){
+		output.innerHTML += playerScore[i] + '<br>';
+	}
+}
+
+trigger.addEventListener('click', listPlayers);
+
+
+
 
