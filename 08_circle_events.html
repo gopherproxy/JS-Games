@@ -7,9 +7,9 @@
 <script type="text/javascript">
 	
 // global variables
-var stage, w, h, circle, circleColor, clickCounter;
+var stage, w, h, circle, circleColor, score;
 	
-//var clickCounter = false;
+var clickCounter = false;
 	
 console.log(clickCounter);
 
@@ -20,10 +20,17 @@ function init(){
 	console.log(h);
 	createjs.Ticker.addEventListener('tick', tickHandler);
 	drawCircle();
+	addScore();
 	circle.addEventListener('click', clickCircle);
 }
 	
 function tickHandler(e){
+	circle.alpha = 1;
+	// implementing a basic hit test
+	// mapping the global mouse  coordinates to the local position of the circle:
+	var pt = circle.globalToLocal(stage.mouseX, stage.mouseY);
+	console.log(pt.x, pt.y);
+	if (stage.mouseInBounds && circle.hitTest(pt.x, pt.y)) { circle.alpha = 0.1;};
 	stage.update();
 }
 	
@@ -33,12 +40,11 @@ function drawCircle(){
 	circle.graphics.drawCircle(0, 0, 50);
 	circle.x = w / 2;
 	circle.y = h / 2;
+	circle.alpha = 1;
 	stage.addChild(circle);
 }
 	
 function clickCircle(){
-	
-	console.log('Circle clicked!');
 	
 	if(!clickCounter){
 		circleColor.style = 'yellow';
@@ -48,6 +54,19 @@ function clickCircle(){
 		clickCounter = false;
 	}
 	
+	score.value++;
+	score.text = score.value;
+	console.log(score.value);
+
+}
+	
+function addScore(){
+	score = new createjs.Text("0", "20px Arial", "red");
+ 	score.x = w - 50;
+	score.y = h - h + 50;
+ 	score.textBaseline = "alphabetic";
+	score.value = 0;
+	stage.addChild(score);
 }
 
 
