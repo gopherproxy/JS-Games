@@ -21,6 +21,8 @@ function init(){
 	createjs.Ticker.addEventListener('tick', tickHandler);
 	drawCircle();
 	addScore();
+	// registering an eventhandler for window (if any key is pressed...)
+	window.onkeydown = onKey;
 	circle.addEventListener('click', clickCircle);
 }
 	
@@ -29,7 +31,7 @@ function tickHandler(e){
 	// implementing a basic hit test
 	// mapping the global mouse  coordinates to the local position of the circle:
 	var pt = circle.globalToLocal(stage.mouseX, stage.mouseY);
-	console.log(pt.x, pt.y);
+	//console.log(pt.x, pt.y);
 	if (stage.mouseInBounds && circle.hitTest(pt.x, pt.y)) { circle.alpha = 0.1;};
 	stage.update();
 }
@@ -67,6 +69,30 @@ function addScore(){
  	score.textBaseline = "alphabetic";
 	score.value = 0;
 	stage.addChild(score);
+}
+	
+function onKey(e){
+	switch(e.keyCode){
+		case 37:
+			console.log('move left');
+			circle.x -= 10;
+			break;
+			
+		case 39:
+			console.log('move right');
+			circle.x += 10;
+			break;
+			
+		case 38:
+			console.log('move up');
+			circle.y -= 10;
+			break;
+			
+		case 40:
+			console.log('move down');
+			circle.y += 10;
+			break;
+	}
 }
 
 
