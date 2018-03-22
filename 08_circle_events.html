@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<script type="text/javascript" src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script type="text/javascript">
+	
+// global variables
+var stage, w, h, circle, circleColor, clickCounter;
+	
+//var clickCounter = false;
+	
+console.log(clickCounter);
+
+function init(){
+	stage = new createjs.Stage("demoCanvas");
+	h = demoCanvas.height;
+	w = demoCanvas.width;
+	console.log(h);
+	createjs.Ticker.addEventListener('tick', tickHandler);
+	drawCircle();
+	circle.addEventListener('click', clickCircle);
+}
+	
+function tickHandler(e){
+	stage.update();
+}
+	
+function drawCircle(){
+	circle = new createjs.Shape(); // instantiating the Shape class
+	circleColor = circle.graphics.beginFill('red').command; // command stores the related action
+	circle.graphics.drawCircle(0, 0, 50);
+	circle.x = w / 2;
+	circle.y = h / 2;
+	stage.addChild(circle);
+}
+	
+function clickCircle(){
+	
+	console.log('Circle clicked!');
+	
+	if(!clickCounter){
+		circleColor.style = 'yellow';
+		clickCounter = true;
+	} else {
+		circleColor.style = 'red';
+		clickCounter = false;
+	}
+	
+}
+
+
+
+</script>
+
+<style type="text/css">
+#demoCanvas {
+	border: 1px solid gray;
+	padding: 2px;
+}
+</style>
+</head>
+
+<body onload="init();">
+<canvas id="demoCanvas" width="500" height="300"> alternate content </canvas>
+</body>
+</html>
