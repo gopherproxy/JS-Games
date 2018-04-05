@@ -6,7 +6,23 @@ lib.ssMetadata = [];
 
 
 // symbols:
+// helper functions:
 
+function mc_symbol_clone() {
+	var clone = this._cloneProps(new this.constructor(this.mode, this.startPosition, this.loop));
+	clone.gotoAndStop(this.currentFrame);
+	clone.paused = this.paused;
+	clone.framerate = this.framerate;
+	return clone;
+}
+
+function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
+	var prototype = cjs.extend(symbol, cjs.MovieClip);
+	prototype.clone = mc_symbol_clone;
+	prototype.nominalBounds = nominalBounds;
+	prototype.frameBounds = frameBounds;
+	return prototype;
+	}
 
 
 (lib.myHero = function(mode,startPosition,loop) {
@@ -77,6 +93,18 @@ lib.ssMetadata = [];
 p.nominalBounds = new cjs.Rectangle(-51,-51,102,102);
 
 
+(lib.crossHair = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// Layer_1
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f().s("#FF0000").ss(7,1,1).p("AFeAAQAACRhmBnQhnBmiRAAQiQAAhnhmQhmhnAAiRQAAiQBmhnQBnhmCQAAQCRAABnBmQBmBnAACQg");
+
+	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.crossHair, new cjs.Rectangle(-38.5,-38.5,77,77), null);
+
+
 // stage content:
 (lib.smileyshooter = function(mode,startPosition,loop) {
 if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
@@ -84,7 +112,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	// timeline functions:
 	this.frame_0 = function() {
 		// global variables
-		var w, h, myHero;
+		var w, h, myHero, myCursor;
 		
 		//game function
 		function startGame(){
@@ -92,16 +120,24 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			h = stage.canvas.height;
 			addElements();
 			createjs.Ticker.on("tick", moveHero);
+			createjs.Ticker.on("tick", moveCursor);
 			
 		}
 		
 		function addElements(){
 			// adding the smiley hero from the library
 			myHero = new lib.myHero(); // linkage!
-			myHero.x = w / 2;
-			myHero.y = h / 2;
+			// problems calculating stage.canvas.width / height on MAC!
+			myHero.x = 400;
+			myHero.y = 300;
 			stage.addChild(myHero);
-				
+			myHero.addEventListener("click", shootHero.bind(this));
+			// custom mouse cursor
+			stage.canvas.style.cursor = 'none';
+			myCursor = new lib.crossHair();
+			myCursor.x = 100;
+			myCursor.y = 100;
+			stage.addChild(myCursor);
 		}
 		
 		function moveHero(){
@@ -110,12 +146,28 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			if (myHero.x > w + 100){
 				// starting again from the left side
 				myHero.x = -100;
-				myHero.y = Math.floor(Math.random() * h - 80);
+				// randomzing y position
+				myHero.y = Math.floor(Math.random() * h - 60);
 			}
+		}
+		
+		function shootHero(){
+			// playing the animation inside the MoveClip
+			myHero.gotoAndPlay(1);	
+			console.log('HIT!');
+		}
+		
+		function moveCursor(){
+			myCursor.x = stage.mouseX;
+			myCursor.y = stage.mouseY;
 		}
 		
 		// start the game
 		startGame();
+		
+		/* Custom Mouse Cursor
+		Replaces the default mouse cursor with the specified symbol instance.
+		*/
 	}
 
 	// actions tween:
