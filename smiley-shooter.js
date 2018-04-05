@@ -98,11 +98,27 @@ p.nominalBounds = new cjs.Rectangle(-51,-51,102,102);
 
 	// Layer_1
 	this.shape = new cjs.Shape();
-	this.shape.graphics.f().s("#FF0000").ss(7,1,1).p("AFeAAQAACRhmBnQhnBmiRAAQiQAAhnhmQhmhnAAiRQAAiQBmhnQBnhmCQAAQCRAABnBmQBmBnAACQg");
+	this.shape.graphics.f().s("#FF0000").ss(7,1,1).p("AAAiqIAAFV");
+	this.shape.setTransform(29.1,0,1,1,90);
 
-	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
+	this.shape_1 = new cjs.Shape();
+	this.shape_1.graphics.f().s("#FF0000").ss(7,1,1).p("AAAiqIAAFV");
+	this.shape_1.setTransform(-29.1,0,1,1,90);
 
-}).prototype = getMCSymbolPrototype(lib.crossHair, new cjs.Rectangle(-38.5,-38.5,77,77), null);
+	this.shape_2 = new cjs.Shape();
+	this.shape_2.graphics.f().s("#FF0000").ss(7,1,1).p("AAAiqIAAFV");
+	this.shape_2.setTransform(0,-29.1);
+
+	this.shape_3 = new cjs.Shape();
+	this.shape_3.graphics.f().s("#FF0000").ss(7,1,1).p("AAAiqIAAFV");
+	this.shape_3.setTransform(0,29.1);
+
+	this.shape_4 = new cjs.Shape();
+	this.shape_4.graphics.f().s("#FF0000").ss(7,1,1).p("AFeAAQAACRhmBnQhnBmiRAAQiQAAhnhmQhmhnAAiRQAAiQBmhnQBnhmCQAAQCRAABnBmQBmBnAACQg");
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_4},{t:this.shape_3},{t:this.shape_2},{t:this.shape_1},{t:this.shape}]}).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.crossHair, new cjs.Rectangle(-49.6,-49.6,99.3,99.3), null);
 
 
 // stage content:
@@ -112,24 +128,27 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	// timeline functions:
 	this.frame_0 = function() {
 		// global variables
-		var w, h, myHero, myCursor;
+		var w, h, myHero, myCursor, score;
 		
 		//game function
 		function startGame(){
 			w = stage.canvas.width;
 			h = stage.canvas.height;
+			// initial score is 0
+			score = 0;
+			// transferring the value to the dynamic textfield (instancename(!)counter)
+			// exportRoot (EaslJS) can access the maintimeline directly! 
+			exportRoot.counter.text = score;
 			addElements();
-			createjs.Ticker.on("tick", moveHero);
-			createjs.Ticker.on("tick", moveCursor);
-			
+			createjs.Ticker.on("tick", moveElements);
 		}
 		
 		function addElements(){
 			// adding the smiley hero from the library
 			myHero = new lib.myHero(); // linkage!
 			// problems calculating stage.canvas.width / height on MAC!
-			myHero.x = 400;
-			myHero.y = 300;
+			myHero.x = w / 2;
+			myHero.y = h / 2;
 			stage.addChild(myHero);
 			myHero.addEventListener("click", shootHero.bind(this));
 			// custom mouse cursor
@@ -138,6 +157,11 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			myCursor.x = 100;
 			myCursor.y = 100;
 			stage.addChild(myCursor);
+		}
+		
+		function moveElements(){
+			moveHero();
+			moveCursor();
 		}
 		
 		function moveHero(){
@@ -151,15 +175,20 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			}
 		}
 		
+		function moveCursor(){
+			// attaching the custom cursor to the current mouse position
+			myCursor.x = stage.mouseX;
+			myCursor.y = stage.mouseY;
+		}
+		
 		function shootHero(){
 			// playing the animation inside the MoveClip
 			myHero.gotoAndPlay(1);	
 			console.log('HIT!');
-		}
-		
-		function moveCursor(){
-			myCursor.x = stage.mouseX;
-			myCursor.y = stage.mouseY;
+			// incrementing the score the 
+			score++;
+			// exportRoot (EaslJS) can access the maintimeline directly! 
+			exportRoot.counter.text = score;	
 		}
 		
 		// start the game
@@ -173,8 +202,26 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 	// actions tween:
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
 
+	// score (dynamic text)
+	this.counter = new cjs.Text("", "76px 'Arial'", "#FFFFFF");
+	this.counter.name = "counter";
+	this.counter.textAlign = "center";
+	this.counter.lineHeight = 87;
+	this.counter.lineWidth = 66;
+	this.counter.parent = this;
+	this.counter.setTransform(748.9,14.8);
+
+	this.timeline.addTween(cjs.Tween.get(this.counter).wait(1));
+
+	// background
+	this.shape = new cjs.Shape();
+	this.shape.graphics.lf(["#004AE9","#51F9FE"],[0,1],0,409.1,0,-409.1).s().p("Eg+fAu4MAAAhdvMB8/AAAMAAABdvg");
+	this.shape.setTransform(400,300);
+
+	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
+
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = null;
+p.nominalBounds = new cjs.Rectangle(400,300,800,600);
 // library properties:
 lib.properties = {
 	id: 'B9FD92531A1CD147B64CF6C0EB7A9F6D',
