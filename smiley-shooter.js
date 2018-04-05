@@ -157,6 +157,8 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 			myCursor.x = 100;
 			myCursor.y = 100;
 			stage.addChild(myCursor);
+			// update the stage
+			stage.update();
 		}
 		
 		function moveElements(){
@@ -176,6 +178,7 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		}
 		
 		function moveCursor(){
+			// Custom Mouse Cursor
 			// attaching the custom cursor to the current mouse position
 			myCursor.x = stage.mouseX;
 			myCursor.y = stage.mouseY;
@@ -193,10 +196,6 @@ if (loop == null) { loop = false; }	this.initialize(mode,startPosition,loop,{});
 		
 		// start the game
 		startGame();
-		
-		/* Custom Mouse Cursor
-		Replaces the default mouse cursor with the specified symbol instance.
-		*/
 	}
 
 	// actions tween:
