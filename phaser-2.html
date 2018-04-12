@@ -10,6 +10,8 @@
 // Stage width, height, rendering context (CANVAS, WEBGL, AUTO), HTML container ID  - if empty, game is attached to <body>, object defining the Phaser main game states
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
 	
+var cat, catcher, cursors;
+	
 function preload(){
 	// load your game assets (instance name, path)
 	game.load.image('bg', 'images/bg.png');
@@ -20,12 +22,41 @@ function preload(){
 function create(){
 	// world building / game setup
 	game.add.sprite(0, 0, 'bg');
-	game.add.sprite(game.width / 2, game.height / 2, 'catcher');
-	game.add.sprite(game.width * Math.random(), game.height * Math.random(), 'cat');
-	cat.anchor.set(0.5, 0.5);
+	game.add.sprite(0,0,"bg");
+
+	// attaching the catcher
+	catcher = game.add.sprite(game.width / 2, game.height / 2, "catcher");
+	catcher.anchor.setTo(.5,0);
+	game.physics.enable(catcher, Phaser.Physics.ARCADE);
+	
+	// attaching the cat
+	cat = game.add.sprite( Math.random() * game.width, Math.random() * game.height, "cat");
+	game.physics.enable(cat, Phaser.Physics.ARCADE);
+
+	// invoke game controls
+	cursors = game.input.keyboard.createCursorKeys();
+	
 }
 	
 function update(){
+	// run the game loop
+	// if left arrow is pressed
+	if(cursors.left.isDown){
+		catcher.x -= 5;
+		// scaling 100%, pointing at the original direction
+		catcher.scale.x = 1;
+	}
+	if(cursors.right.isDown){
+		catcher.x += 5;
+		// scaling 100%, pointing at the opposite direction
+		catcher.scale.x = -1;
+	}
+	if(cursors.up.isDown){
+		catcher.y -= 5;
+	}
+	if(cursors.down.isDown){
+		catcher.y += 5;
+	}
 	
 }
 
