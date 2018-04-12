@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cat Catcher (phaser.io)</title>
+<script src="phaser/phaser2.10.3.min.js"></script>
+<script>
+// initializing a new Phaser game:
+// calling the Phaser Game class with constructor arguments:
+// Stage width, height, rendering context (CANVAS, WEBGL, AUTO), HTML container ID  - if empty, game is attached to <body>, object defining the Phaser main game states
+var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
+	
+function preload(){
+	// load your game assets (instance name, path)
+	game.load.image('bg', 'images/bg.png');
+	game.load.image('catcher', 'images/catcher.png');
+	game.load.image('cat', 'images/cat.png');
+}
+	
+function create(){
+	// world building / game setup
+	game.add.sprite(0, 0, 'bg');
+	game.add.sprite(game.width / 2, game.height / 2, 'catcher');
+	game.add.sprite(game.width * Math.random(), game.height * Math.random(), 'cat');
+}
+	
+function update(){
+	
+}
+
+</script>
+</head>
+
+<body>
+</body>
+</html>
