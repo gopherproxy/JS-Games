@@ -21,19 +21,18 @@ function preload(){
 	
 function create(){
 	// world building / game setup
-	game.add.sprite(0, 0, 'bg');
-	game.add.sprite(0,0,"bg");
+	game.add.image(0, 0, 'bg');
 
 	// attaching the catcher
-	catcher = game.add.sprite(game.width / 2, game.height / 2, "catcher");
+	catcher = game.add.sprite(game.width / 2, game.height / 2, 'catcher');
 	catcher.anchor.setTo(0.5,0);
 	// ARCADE (arcade) is a Phaser core class
 	game.physics.enable(catcher, Phaser.Physics.ARCADE);
 	
 	// attaching the cat
-	cat = game.add.sprite( Math.random() * game.width, Math.random() * game.height, "cat");
+	cat = game.add.sprite( Math.random() * game.width, Math.random() * game.height, 'cat');
 	game.physics.enable(cat, Phaser.Physics.ARCADE);
-	catcher.anchor.setTo(0.5,0.5);
+	//cat.anchor.setTo(0.5,0.5);
 	// invoke game controls
 	cursors = game.input.keyboard.createCursorKeys();
 	
