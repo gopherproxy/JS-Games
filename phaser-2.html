@@ -49,20 +49,20 @@ function create(){
 function update(){
 	// run the game loop
 	// if left arrow is pressed
-	if(cursors.left.isDown){
+	if(cursors.left.isDown && catcher.x>10){
 		catcher.x -= 5;
 		// scaling 100%, pointing at the original direction
 		catcher.scale.x = 1;
 	}
-	if(cursors.right.isDown){
+	if(cursors.right.isDown && catcher.x<game.width-10){
 		catcher.x += 5;
 		// scaling 100%, pointing at the opposite direction
 		catcher.scale.x = -1;
 	}
-	if(cursors.up.isDown){
+	if(cursors.up.isDown && catcher.y>10){
 		catcher.y -= 5;
 	}
-	if(cursors.down.isDown){
+	if(cursors.down.isDown && catcher.y<game.height-10){
 		catcher.y += 5;
 	}
 	
