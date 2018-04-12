@@ -10,7 +10,7 @@
 // Stage width, height, rendering context (CANVAS, WEBGL, AUTO), HTML container ID  - if empty, game is attached to <body>, object defining the Phaser main game states
 var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
 	
-var cat, catcher, cursors;
+var cat, catcher, cursors, score, scoreTxt;
 	
 function preload(){
 	// load your game assets (instance name, path)
@@ -26,15 +26,23 @@ function create(){
 
 	// attaching the catcher
 	catcher = game.add.sprite(game.width / 2, game.height / 2, "catcher");
-	catcher.anchor.setTo(.5,0);
+	catcher.anchor.setTo(0.5,0);
+	// ARCADE (arcade) is a Phaser core class
 	game.physics.enable(catcher, Phaser.Physics.ARCADE);
 	
 	// attaching the cat
 	cat = game.add.sprite( Math.random() * game.width, Math.random() * game.height, "cat");
 	game.physics.enable(cat, Phaser.Physics.ARCADE);
-
+	catcher.anchor.setTo(0.5,0.5);
 	// invoke game controls
 	cursors = game.input.keyboard.createCursorKeys();
+	
+	// creating the score
+	score = 0;
+	// the textfield to display score
+	// arguments: coordinates, value to display, style)
+	scoreTxt = game.add.text(10, 10, score.toString(), styles)
+	var styles = {font: '20px Verdana', fill: '#FFF'};
 	
 }
 	
@@ -58,6 +66,21 @@ function update(){
 		catcher.y += 5;
 	}
 	
+	// implementing HitTest:
+	// arguments: objects, callback function
+	game.physics.arcade.overlap(catcher, cat, catHitHandler);
+	
+}
+	
+// extra functionality
+
+function catHitHandler(){
+	console.log('Cat caught!');
+	cat.x = Math.random() * game.width;
+	cat.y = Math.random() * game.height;
+	
+	score++;
+	scoreTxt.setText(score.toString());
 }
 
 </script>
