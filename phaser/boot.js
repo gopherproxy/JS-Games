@@ -2,14 +2,18 @@
 WebFontConfig = {
 
     // 'active' means all requested fonts have finished loading
-    // We set a 1 second delay before calling 'createText'.
+    // We set a 1 second delay before calling the dummy function 'createText'.
     // For some reason if we don't the browser cannot render the text the first time it's created.
-    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+    active: function() { game.time.events.add(Phaser.Timer.SECOND, this.createText); },
 
     // The Google Fonts we want to load (specify as many as you like in the array)
     google: {
       families: ['Chewy', 'Luckiest Guy']
-    }
+    },
+	
+	createText: function () {
+		// dummy function to render Google web fonts
+	}
 
 };
 
